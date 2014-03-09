@@ -15,6 +15,10 @@ const int B_PIN = 6;
 const int L_PIN = 5;
 const int R_PIN = 4;
 
+// limit command duration (to prevent runaway car)
+const int DURATION = 750;
+unsigned long lastCommandTime = 0;
+
 // input (reads http requests)
 String input;
 
@@ -110,11 +114,18 @@ void loop() {
             if (input.indexOf("?forward") > 0) {
               digitalWrite(F_PIN, LOW);
               digitalWrite(B_PIN, HIGH);
+              
+              // store time of command
+              lastCommandTime = millis();
             }
 
             if (input.indexOf("?back") > 0) {
               digitalWrite(B_PIN, LOW);
               digitalWrite(F_PIN, HIGH);
+              
+              
+              // store time of command
+              lastCommandTime = millis();
             }
           }
 
@@ -139,5 +150,10 @@ void loop() {
       }
     }
   }
-}
 
+  // kill forward/back pins after duration (to prevent runaway car)
+  if ((millis() - lastCommandTime > DURATION)) {
+    digitalWrite(F_PIN, HIGH);
+    digitalWrite(B_PIN, HIGH);
+  }
+}
