@@ -7,8 +7,6 @@
 // network settings
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 192, 168, 1, 177 };
-byte gateway[] = { 192, 168, 1, 1 };
-byte subnet[] = { 255, 255, 255, 0 };
 const int PORT = 80;
 
 // pins
@@ -35,7 +33,7 @@ void setup() {
   digitalWrite(R_PIN, HIGH);
 
   // start ethernet and server
-  Ethernet.begin(mac, ip, gateway, subnet);
+  Ethernet.begin(mac, ip);
   server.begin();
   Serial.begin(9600);
 
@@ -142,3 +140,4 @@ void loop() {
     }
   }
 }
+
